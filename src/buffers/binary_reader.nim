@@ -1,18 +1,18 @@
 import ./utils
 import std/strutils
 
+
 type
   BinaryReader* = ref object
     buffer: seq[byte]
     position: int
 
-
-proc read*[T](srcBuff: seq[byte], pos: int = 0): T =
-  let len = sizeof(T)
-  let buff = alloc(len)
-  buff.copyMem(srcBuff[pos].unsafeAddr, len)
-  result = cast[ptr T](buff)[]
-  dealloc(buff)
+  AllowedTypes =
+    uint8 | int8 |
+    uint16 | int16 |
+    uint32 | int32 |
+    uint64 | int64 |
+    float | float64
 
 
 proc newBinaryReader*(buff: seq[byte]): BinaryReader =
@@ -29,15 +29,14 @@ proc newBinaryReader*(buff: string): BinaryReader =
 
 proc readBytes*(self: BinaryReader, len: int): seq[byte] =
   result = newSeq[byte](len)
-  for i in 0..<len:
-    result[i] = self.buffer[self.position + i]
+  copy(self.buffer[0].unsafeAddr, self.position, result[0].unsafeAddr, 0, len)
   self.position += len
 
 
-proc read[T](self: BinaryReader): T =
+proc read*[T: AllowedTypes](self: BinaryReader): T =
   let len = sizeof(T)
-  var buff = self.readBytes(len)
-  result = cast[ptr T](buff[0].unsafeAddr)[]
+  copy(self.buffer[0].unsafeAddr, self.position, result.unsafeAddr, 0, len)
+  self.position += len
 
 
 proc readU8*(self: BinaryReader): uint8 =
@@ -50,28 +49,28 @@ proc readI8*(self: BinaryReader): int8 =
   inc self.position
 
 
-proc readU16*(self: BinaryReader): uint16 = read[uint16](self)
+proc readU16*(self: BinaryReader): uint16 = self.read[:uint16]()
 
 
-proc readI16*(self: BinaryReader): int16 = read[int16](self)
+proc readI16*(self: BinaryReader): int16 = self.read[:int16]()
 
 
-proc readU32*(self: BinaryReader): uint32 = read[uint32](self)
+proc readU32*(self: BinaryReader): uint32 = self.read[:uint32]()
 
 
-proc readI32*(self: BinaryReader): int32 = read[int32](self)
+proc readI32*(self: BinaryReader): int32 = self.read[:int32]()
 
 
-proc readU64*(self: BinaryReader): uint64 = read[uint64](self)
+proc readU64*(self: BinaryReader): uint64 = self.read[:uint64]()
 
 
-proc readI64*(self: BinaryReader): int64 = read[int64](self)
+proc readI64*(self: BinaryReader): int64 = self.read[:int64]()
 
 
-proc readF32*(self: BinaryReader): float = read[float](self)
+proc readF32*(self: BinaryReader): float = self.read[:float]()
 
 
-proc readF64*(self: BinaryReader): float64 = read[float64](self)
+proc readF64*(self: BinaryReader): float64 = self.read[:float64]()
 
 
 proc readString*(self: BinaryReader): string =

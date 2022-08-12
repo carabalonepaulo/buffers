@@ -11,8 +11,6 @@ test "write bytes":
   check reader.readU8() == 20'u8
   check reader.readU8() == 30'u8
 
-  writer.dispose()
-
 
 test "write int":
   let writer = newBinaryWriter(7)
@@ -25,8 +23,6 @@ test "write int":
   check reader.readU16() == 20'u16
   check reader.readU32() == 30'u32
 
-  writer.dispose()
-
 
 test "write string":
   let writer = newBinaryWriter(8)
@@ -34,8 +30,6 @@ test "write string":
 
   let reader = newBinaryReader(writer.buffer)
   check reader.readString() == "soreto"
-
-  writer.dispose()
 
 
 test "write bool":
@@ -46,5 +40,3 @@ test "write bool":
   let reader = newBinaryReader(writer.buffer)
   check reader.readBool() == false
   check reader.readBool() == true
-
-  writer.dispose()
