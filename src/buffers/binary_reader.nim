@@ -74,9 +74,11 @@ proc readF64*(self: BinaryReader): float64 = self.read[:float64]()
 
 
 proc readString*(self: BinaryReader): string =
-  let len = self.read[:uint16]()
-  let buff = self.readBytes(len.int)
-  result = cast[string](buff)
+  cast[string](self.readBytes(self.read[:uint16]().int))
+
+
+proc readRawString*(self: BinaryReader, len: int): string =
+  cast[string](self.readBytes(len))
 
 
 proc readBool*(self: BinaryReader): bool = self.readU8() != 0
