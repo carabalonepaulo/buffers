@@ -1,5 +1,5 @@
-import std/strutils
 import ./utils
+
 
 type
   BinaryWriter* = ref object
@@ -95,7 +95,7 @@ proc buffer*(self: BinaryWriter): seq[byte] =
 
 
 proc `$`*(self: BinaryWriter): string =
-  result = repeat('\0', self.position)
+  result = newString(self.position)
   copyMem(result[0].unsafeAddr, self.buffer[0].unsafeAddr, self.position)
 
 

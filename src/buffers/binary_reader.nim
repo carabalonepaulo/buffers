@@ -1,5 +1,4 @@
 import ./utils
-import std/strutils
 
 
 type
@@ -89,5 +88,5 @@ proc unread*[T: string | seq[byte]](self: BinaryReader): T =
   when T is seq[byte]:
     result = newSeq[byte](len)
   else:
-    result = repeat('\0', len)
+    result = newString(len)
   copy(self.buffer[0].unsafeAddr, self.position, result[0].unsafeAddr, 0, len)
