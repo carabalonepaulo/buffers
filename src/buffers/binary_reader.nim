@@ -83,3 +83,11 @@ proc unread*[T: string | seq[byte]](self: BinaryReader): T =
   else:
     result = newString(len)
   copy(self.buffer[0].unsafeAddr, self.position, result[0].unsafeAddr, 0, len)
+
+
+proc reuse*(self: BinaryReader, buff: string | seq[byte]) =
+  self.position = 0
+  when buff is string:
+    self.buffer = cast[seq[byte]](buff)
+  else:
+    self.buffer = buff
