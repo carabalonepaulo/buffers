@@ -1,5 +1,15 @@
 import std/strutils
 
+
+type AllowedTypes* =
+  uint8 | int8 |
+  uint16 | int16 |
+  uint32 | int32 |
+  uint64 | int64 |
+  float | float64 |
+  bool
+
+
 proc copy*(src: pointer, srcPos: int, dest: pointer, destPos: int, len: int) =
   copyMem(cast[pointer](cast[int](dest) + destPos),
       cast[pointer](cast[int](src) + srcPos), len)

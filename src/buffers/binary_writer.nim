@@ -39,48 +39,8 @@ proc write*(self: BinaryWriter, value: seq[byte]) =
   self.write(value[0].unsafeAddr, value.len)
 
 
-proc write*(self: BinaryWriter, value: int8) =
-  self.write(value.unsafeAddr, 1)
-
-
-proc write*(self: BinaryWriter, value: uint8) =
-  self.write(value.unsafeAddr, 1)
-
-
-proc write*(self: BinaryWriter, value: int16) =
-  self.write(value.unsafeAddr, 2)
-
-
-proc write*(self: BinaryWriter, value: uint16) =
-  self.write(value.unsafeAddr, 2)
-
-
-proc write*(self: BinaryWriter, value: int32) =
-  self.write(value.unsafeAddr, 4)
-
-
-proc write*(self: BinaryWriter, value: uint32) =
-  self.write(value.unsafeAddr, 4)
-
-
-proc write*(self: BinaryWriter, value: int64) =
-  self.write(value.unsafeAddr, 8)
-
-
-proc write*(self: BinaryWriter, value: uint64) =
-  self.write(value.unsafeAddr, 8)
-
-
-proc write*(self: BinaryWriter, value: float32) =
-  self.write(value.unsafeAddr, 4)
-
-
-proc write*(self: BinaryWriter, value: float64) =
-  self.write(value.unsafeAddr, 8)
-
-
-proc write*(self: BinaryWriter, value: bool) =
-  self.write(value.unsafeAddr, 1)
+proc write*[T: AllowedTypes](self: BinaryWriter, value: T) =
+  self.write(value.unsafeAddr, sizeof(T))
 
 
 proc write*(self: BinaryWriter, value: string, raw = false) =

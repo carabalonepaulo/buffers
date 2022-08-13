@@ -6,13 +6,6 @@ type
     buffer: seq[byte]
     position: int
 
-  AllowedTypes =
-    uint8 | int8 |
-    uint16 | int16 |
-    uint32 | int32 |
-    uint64 | int64 |
-    float | float64
-
 
 proc newBinaryReader*(buff: seq[byte]): BinaryReader =
   result = BinaryReader()

@@ -30,7 +30,7 @@ test "read bool":
 
   let reader = newBinaryReader(writer.data)
   check reader.readBool() == false
-  check reader.readBool() == true
+  check reader.read[:bool]() == true
 
 
 test "read string":
